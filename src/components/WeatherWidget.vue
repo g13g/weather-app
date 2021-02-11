@@ -3,11 +3,11 @@
     <section class="left" back>
       <div class="gradient-overlay"></div>
       <header>
-        <p class="day">Wednesday</p>
-        <time datetime="2021-02-10">Feb 10, 2021</time>
+        <p class="day">{{dayOfTheWeek}}</p>
+        <time datetime="2021-02-10">{{dateFormatted}}</time>
         <p class="city">
         <map-pin-icon size="0.8x" class="custom-class"></map-pin-icon>
-        Kralingen, NL</p>
+        {{city}}, NL</p>
       </header>
       
       <footer>
@@ -41,11 +41,29 @@
 
 <script>
 import { MapPinIcon, CloudIcon } from 'vue-feather-icons'
+import moment from 'moment';
 
 export default {
   name: 'WeatherWidget',
-  props: {
-    msg: String
+  data() {
+    return {
+      dayOfTheWeek: this.getWeekDay(),
+      dateFormatted: this.getFormattedDate(),
+      city: 'Rotterdam',
+      temperature: -5,
+      weatherDescription: 'Clear Sky',
+    };
+  },
+  methods: {
+    getWeekDay() {
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      var d = new Date();
+      var n = d.getDay()
+      return days[n];
+    },
+    getFormattedDate() {
+      return moment().format('MMM D, YYYY');
+    },
   },
   components: {
     MapPinIcon,
