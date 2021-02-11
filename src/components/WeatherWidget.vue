@@ -18,18 +18,23 @@
 
     </section>
     <section class="right">
-      <p class="metric">
-        <b>Precipitation</b>
-        <span>40 %</span>
-      </p>
-      <p class="metric">
-        <b>Humidity</b>
-        <span>80 %</span>
-      </p>
-      <p class="metric">
-        <b>Wind</b>
-        <span>9.21 km/h</span>
-      </p>
+      <header>
+        <p class="metric">
+          <b>Precipitation</b>
+          <span>40 %</span>
+        </p>
+        <p class="metric">
+          <b>Humidity</b>
+          <span>80 %</span>
+        </p>
+        <p class="metric">
+          <b>Wind</b>
+          <span>9.21 km/h</span>
+        </p>
+      </header>
+      <footer>
+        <p>weather forecast goes here...</p>
+      </footer>
     </section>
   </div>
 </template>
@@ -53,7 +58,7 @@ export default {
 <style scoped>
 .self {
   background: #0b132b;
-  width: 800px;
+  width: 740px;
   height: 450px;
   border-radius: 25px;
   color: white;
@@ -120,6 +125,9 @@ export default {
 .right {
   padding: 1.3em 2em;
   width: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .right .metric {
   display: flex;
@@ -128,5 +136,11 @@ export default {
 .right .metric b {
   font-weight: 900;
   font-size: 14pt;
+}
+.right footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5em;
 }
 </style>
