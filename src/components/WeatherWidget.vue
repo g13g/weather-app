@@ -49,7 +49,8 @@ export default {
     return {
       dayOfTheWeek: this.getWeekDay(),
       dateFormatted: this.getFormattedDate(),
-      city: 'Rotterdam',
+      geo: null,
+      city: 'Rotterdam', // use initially, overwrite after geolocation set
       temperature: -5,
       weatherDescription: 'Clear Sky',
     };
@@ -64,6 +65,25 @@ export default {
     getFormattedDate() {
       return moment().format('MMM D, YYYY');
     },
+    getPosition() {
+      return new Promise((resolve, reject) => 
+          navigator.geolocation.getCurrentPosition(resolve, reject)
+      );
+    },
+    async requestAndSetGeolocation() {
+      try {
+        const position = await this.getPosition();
+        this.geo = {
+          lat: position.coords.latitude,
+          long: position.coords.longitude
+        }        
+      } catch (err) {
+        console.error(err.message);
+      }
+    }
+  },
+  mounted() {
+    this.requestAndSetGeolocation();
   },
   components: {
     MapPinIcon,
