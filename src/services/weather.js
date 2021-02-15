@@ -5,7 +5,6 @@ const URI_BASE = `https://runkit.io/g13g/602547055dd629001a1c9b43/branches/maste
 export async function getWeatherByCityName(city) {
   const QUERY = `?q=${city}&units=metric`;
   const URI = URI_BASE + QUERY;
-  console.log(URI);
   const res = await axios.get(URI);
   return res.data;
 }

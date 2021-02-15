@@ -1,6 +1,6 @@
 <template>
   <div class="self">
-    <section class="left" back>
+    <section class="left" :style="{ backgroundImage: 'url(' + photoURI + ')' }">
       <div class="gradient-overlay"></div>
       <header>
         <p class="day">{{dayOfTheWeek}}</p>
@@ -43,6 +43,7 @@
 import { MapPinIcon, SunIcon, CircleIcon, CloudIcon, CloudDrizzleIcon, CloudRainIcon, CloudLightningIcon, CloudSnowIcon, AlignCenterIcon } from 'vue-feather-icons';
 import moment from 'moment';
 import { getWeatherByGeo, getWeatherByCityName, getIconName } from '../services/weather';
+import { queryPhoto, getWeatherInformedKeyword } from '../services/photo';
 
 export default {
   name: 'WeatherWidget',
@@ -58,6 +59,7 @@ export default {
       wind: null,
       humidity: null,
       cloudiness: null,
+      photoURI: null,
     };
   },
   computed: {
@@ -107,12 +109,18 @@ export default {
 
       // Metrics
       this.temperature = data.main.temp;
-      // const tempMin = data.main.temp_min;
-      // const tempMax = data.main.temp_max;
       this.wind = data.wind.speed;
       this.humidity = data.main.humidity;
       this.cloudiness = data.clouds.all;
 
+      // Time / Weather informed photo
+      await this.setPhoto();
+    },
+    async setPhoto() {
+      if (!this.photoURI) {
+        const keyword = getWeatherInformedKeyword(this.iconCode, this.temperature);
+        this.photoURI = await queryPhoto(keyword);
+      }
     }
   },
   async mounted() {
@@ -125,7 +133,6 @@ export default {
     } catch (error) {
       console.log(error);
     }
-    
   },
   components: {
     MapPinIcon,
@@ -155,7 +162,6 @@ export default {
   position: relative;
   padding: 1.3em 2em;
   background: #5BC0BE;
-  background-image: url("https://images.unsplash.com/photo-1542601098-8fc114e148e2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80");
   
   width: 310px;
   max-height: 420px;
@@ -186,7 +192,7 @@ export default {
 	left: 0;
 	background: linear-gradient( 135deg, #72EDF2 10%, #2626a5 100%);
 	border-radius: 25px;
-	opacity: 0.8;
+	opacity: 0.5;
   z-index: -10;
 }
 .left .day {
