@@ -11,7 +11,7 @@
       </header>
       
       <footer>
-        <cloud-icon size="5x"></cloud-icon>
+        <component :is="iconName" size="5x"></component>
         <p class="temperature">{{temperature}}°C</p>
         <p class="description capitalize">{{weatherDescription}}</p>
       </footer>
@@ -40,9 +40,9 @@
 </template>
 
 <script>
-import { MapPinIcon, CloudIcon } from 'vue-feather-icons'
+import { MapPinIcon, SunIcon, CircleIcon, CloudIcon, CloudDrizzleIcon, CloudRainIcon, CloudLightningIcon, CloudSnowIcon, AlignCenterIcon } from 'vue-feather-icons';
 import moment from 'moment';
-import { getWeatherByGeo, getWeatherByCityName } from '../services/weather';
+import { getWeatherByGeo, getWeatherByCityName, getIconName } from '../services/weather';
 
 export default {
   name: 'WeatherWidget',
@@ -54,11 +54,16 @@ export default {
       city: 'Barcelona', // use initially, overwrite after geolocation set
       temperature: 23,
       weatherDescription: 'Clear Sky',
-      iconCode: null,
+      iconCode: '01d',
       wind: null,
       humidity: null,
       cloudiness: null,
     };
+  },
+  computed: {
+    iconName() {
+      return getIconName(this.iconCode);
+    },
   },
   methods: {
     getWeekDay() {
@@ -111,7 +116,7 @@ export default {
     }
   },
   async mounted() {
-    this.setWeatherData();
+    if (!this.geo) this.setWeatherData();
     try {
       await this.requestAndSetGeolocation();
       if (this.geo) {
@@ -124,7 +129,14 @@ export default {
   },
   components: {
     MapPinIcon,
-    CloudIcon
+    SunIcon,
+    CircleIcon,
+    CloudIcon,
+    CloudDrizzleIcon,
+    CloudRainIcon,
+    CloudLightningIcon,
+    CloudSnowIcon,
+    AlignCenterIcon,
   }
 }
 </script>
