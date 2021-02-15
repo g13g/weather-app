@@ -7,29 +7,29 @@
         <time datetime="2021-02-10">{{dateFormatted}}</time>
         <p class="city">
         <map-pin-icon size="0.8x" class="custom-class"></map-pin-icon>
-        {{city}}, NL</p>
+        {{city}}</p>
       </header>
       
       <footer>
-        <cloud-icon size="5x" class="custom-class"></cloud-icon>
-        <p class="temperature">-4°C</p>
-        <p class="description">Scattered clouds</p>
+        <cloud-icon size="5x"></cloud-icon>
+        <p class="temperature">{{temperature}}°C</p>
+        <p class="description capitalize">{{weatherDescription}}</p>
       </footer>
 
     </section>
     <section class="right">
       <header>
         <p class="metric">
-          <b>Precipitation</b>
-          <span>40 %</span>
+          <b>Cloudiness</b>
+          <span>{{cloudiness}} %</span>
         </p>
         <p class="metric">
           <b>Humidity</b>
-          <span>80 %</span>
+          <span>{{humidity}} %</span>
         </p>
         <p class="metric">
           <b>Wind</b>
-          <span>9.21 km/h</span>
+          <span>{{wind}} m/s</span>
         </p>
       </header>
       <footer>
@@ -42,6 +42,7 @@
 <script>
 import { MapPinIcon, CloudIcon } from 'vue-feather-icons'
 import moment from 'moment';
+import { getWeatherByGeo, getWeatherByCityName } from '../services/weather';
 
 export default {
   name: 'WeatherWidget',
@@ -50,9 +51,13 @@ export default {
       dayOfTheWeek: this.getWeekDay(),
       dateFormatted: this.getFormattedDate(),
       geo: null,
-      city: 'Rotterdam', // use initially, overwrite after geolocation set
-      temperature: -5,
+      city: 'Barcelona', // use initially, overwrite after geolocation set
+      temperature: 23,
       weatherDescription: 'Clear Sky',
+      iconCode: null,
+      wind: null,
+      humidity: null,
+      cloudiness: null,
     };
   },
   methods: {
@@ -75,15 +80,47 @@ export default {
         const position = await this.getPosition();
         this.geo = {
           lat: position.coords.latitude,
-          long: position.coords.longitude
+          lon: position.coords.longitude
         }        
       } catch (err) {
         console.error(err.message);
       }
+    },
+    async setWeatherData() {
+      var data = null;
+      if (this.geo) {
+        data = await getWeatherByGeo(this.geo.lat, this.geo.lon)
+      } else {
+        data = await getWeatherByCityName(this.city);
+      } 
+       
+      // Overall weather
+      const weather = data.weather[0];
+      this.iconCode = weather.icon;
+      this.weatherDescription = weather.description;
+      this.city = `${data.name}, ${data.sys.country}`;
+
+      // Metrics
+      this.temperature = data.main.temp;
+      // const tempMin = data.main.temp_min;
+      // const tempMax = data.main.temp_max;
+      this.wind = data.wind.speed;
+      this.humidity = data.main.humidity;
+      this.cloudiness = data.clouds.all;
+
     }
   },
-  mounted() {
-    this.requestAndSetGeolocation();
+  async mounted() {
+    this.setWeatherData();
+    try {
+      await this.requestAndSetGeolocation();
+      if (this.geo) {
+        this.setWeatherData();
+      } 
+    } catch (error) {
+      console.log(error);
+    }
+    
   },
   components: {
     MapPinIcon,
@@ -180,5 +217,8 @@ export default {
   justify-content: center;
   align-items: center;
   margin-bottom: 5em;
+}
+p.capitalize {
+  text-transform: capitalize;
 }
 </style>
