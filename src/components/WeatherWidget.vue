@@ -165,7 +165,6 @@ export default {
   background: #5BC0BE;
   background-position: center center;
   background-size: cover;
-  
   width: 310px;
   max-height: 420px;
   border-radius: 25px;

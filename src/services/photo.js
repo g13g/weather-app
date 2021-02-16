@@ -6,7 +6,8 @@ export async function queryPhoto(keyword) {
   const QUERY = `?query=${keyword}&orientation=portrait`;
   const URI = URI_BASE + QUERY;
   const res = await axios.get(URI);
-  return res.data.urls.regular;
+  const randomIndex = Math.floor(Math.random() * 10);
+  return res.data.results[randomIndex].urls.regular;
 }
 
 export function getWeatherInformedKeyword(iconCode) {
