@@ -33,7 +33,8 @@
         </p>
       </header>
       <footer>
-        <p>weather forecast goes here...</p>
+        <img src="../assets/mock-forecast.png" width="330" alt="dummy forecast">
+        <!-- <p></p> -->
       </footer>
     </section>
   </div>
@@ -236,7 +237,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 5em;
+  margin-bottom: 6em;
 }
 p.capitalize {
   text-transform: capitalize;
