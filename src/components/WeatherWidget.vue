@@ -113,12 +113,13 @@ export default {
       this.humidity = data.main.humidity;
       this.cloudiness = data.clouds.all;
 
-      // Time / Weather informed photo
+      // Set weather-informed photo
       await this.setPhoto();
     },
     async setPhoto() {
       if (!this.photoURI) {
-        const keyword = getWeatherInformedKeyword(this.iconCode, this.temperature);
+        const keyword = getWeatherInformedKeyword(this.iconCode);
+        console.log(keyword);
         this.photoURI = await queryPhoto(keyword);
       }
     }
@@ -162,6 +163,8 @@ export default {
   position: relative;
   padding: 1.3em 2em;
   background: #5BC0BE;
+  background-position: center center;
+  background-size: cover;
   
   width: 310px;
   max-height: 420px;
@@ -192,7 +195,7 @@ export default {
 	left: 0;
 	background: linear-gradient( 135deg, #72EDF2 10%, #2626a5 100%);
 	border-radius: 25px;
-	opacity: 0.5;
+	opacity: 0.7;
   z-index: -10;
 }
 .left .day {
