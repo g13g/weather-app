@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const URI_BASE = 'https://untitled-ihuuousf3gce.runkit.sh/'; //'https://runkit.io/g13g/602ad5459396ab001ac7b07e/branches/master';
+const URI_BASE = 'https://untitled-ihuuousf3gce.runkit.sh/';
 
 export async function queryPhoto(keyword) {
   const QUERY = `?query=${keyword}&orientation=portrait`;

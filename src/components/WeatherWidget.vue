@@ -33,8 +33,8 @@
         </p>
       </header>
       <footer>
+        <!-- TODO: Add real weather forecast -->
         <img src="../assets/mock-forecast.png" width="330" alt="dummy forecast">
-        <!-- <p></p> -->
       </footer>
     </section>
   </div>
