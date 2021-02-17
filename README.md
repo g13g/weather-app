@@ -7,7 +7,7 @@ A (demo) weather app / widget with weather- and time-informed photography.
 - OpenWeatherMap - for current weather data
 - Unsplash - for querying photos
 
-**Design**
+**Design**  
 Credits to [Colin Espinas](https://colinespinas.com) for the [design](https://codepen.io/Call_in/details/pMYGbZ).
 
 ## Project setup
